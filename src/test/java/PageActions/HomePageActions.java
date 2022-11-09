@@ -1,31 +1,31 @@
 package PageActions;
 
 import java.time.Duration;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import PageObject.HomePage;
 import PageObject.LoginPage;
 import Utilities.MyWebDriver;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 public class HomePageActions {
 
     private static WebDriver driver;
     public final static int TIMEOUT = 10;
-
+    private MyWebDriver myWebDriver = new MyWebDriver();
     public final static HomePage homePage = new HomePage();
 
     public final static LoginPage loginPage = new LoginPage();
@@ -33,7 +33,6 @@ public class HomePageActions {
     @Before
     public void setUp() {
         driver = WebDriverManager.firefoxdriver().create();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TIMEOUT));
         driver.manage().window().maximize();
     }
 
@@ -47,11 +46,14 @@ public class HomePageActions {
 
 
     @When("User open Login Site and enters username as {string} and password as {string}")
-    public void goToLoginPageAndLogin(String userName, String passWord) {
+    public void goToLoginPageAndLogin(String userName, String passWord) throws Exception {
+
         driver.findElement(By.xpath(homePage.login_button_xpath)).click();
+        Thread.sleep(2000);
         driver.findElement(By.id(loginPage.username_label_id)).sendKeys(userName);
         driver.findElement(By.name(loginPage.password_label_id)).sendKeys(passWord);
         driver.findElement(By.xpath(loginPage.login_button_xpath)).submit();
+        Thread.sleep(2000);
     }
 
     @Then("User see error message {string} under password lable")

@@ -2,8 +2,8 @@ package PageObject;
 
 public class LoginPage {
 
-    public final String username_label_id = "login;";
-    public final String password_label_id = "password;";
+    public final String username_label_id = "login";
+    public final String password_label_id = "password";
 
     public final String login_button_xpath = "//*[@type = \"submit\"]";
 
